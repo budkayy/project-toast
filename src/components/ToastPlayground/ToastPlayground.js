@@ -1,17 +1,19 @@
 import React from 'react';
-
 import Button from '../Button';
-
 import styles from './ToastPlayground.module.css';
-
 import ToastShelf from '../ToastShelf/ToastShelf.js';
+import { ToastStackContext } from '../ToastProvider/ToastProvider.js';
 
 const VARIANT_OPTIONS = ['notice', 'warning', 'success', 'error'];
+
+export const messageContext = React.createContext();
+export const variantContext = React.createContext();
 
 function ToastPlayground() {
   const [message, setMessage] = React.useState('');
   const [variant, setVariant] = React.useState(VARIANT_OPTIONS[0]);
-  const [messageStack, setMessageStack] = React.useState([]);
+
+  const { handleAddingToast } = React.useContext(ToastStackContext);
 
   function handleMessage(e) {
     const newMessage = e.target.value;
@@ -23,19 +25,9 @@ function ToastPlayground() {
     setVariant(newVariant);
   }
 
-  function handleCloseToast(id) {
-    const newMessageStack = messageStack.filter((msg) => {
-      return msg.id !== id;
-    });
-    setMessageStack(newMessageStack);
-  }
-
   function handleSubmit(e) {
     e.preventDefault();
-    setMessageStack((prev) => [
-      ...prev,
-      { message, variant, id: crypto.randomUUID() },
-    ]);
+    handleAddingToast(message, variant);
     setMessage('');
     setVariant(VARIANT_OPTIONS[0]);
   }
@@ -51,10 +43,7 @@ function ToastPlayground() {
 
       <div className={styles.controlsWrapper}>
         <form onSubmit={handleSubmit}>
-          <ToastShelf
-            messageStack={messageStack}
-            handleCloseToast={handleCloseToast}
-          />
+          <ToastShelf />
 
           <div className={styles.row}>
             <label

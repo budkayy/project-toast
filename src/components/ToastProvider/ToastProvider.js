@@ -1,32 +1,30 @@
 import React from 'react';
 
-function ToastProvider() {
-  const [message, setMessage] = React.useState('');
-  const [variant, setVariant] = React.useState(VARIANT_OPTIONS[0]);
-  const [messageStack, setMessageStack] = React.useState([]);
+export const ToastStackContext = React.createContext();
 
-  function handleMessage(e) {
-    const newMessage = e.target.value;
-    setMessage(newMessage);
-  }
-
-  function handleVarian(e) {
-    const newVariant = e.target.value;
-    setVariant(newVariant);
-  }
+function ToastProvider({ children }) {
+  const [toastStack, setToastStack] = React.useState([]);
 
   function handleCloseToast(id) {
-    const newMessageStack = messageStack.filter((msg) => {
+    const newToastStack = toastStack.filter((msg) => {
       return msg.id !== id;
     });
-    setMessageStack(newMessageStack);
+    setToastStack(newToastStack);
+  }
+
+  function handleAddingToast(message, variant) {
+    setToastStack((prev) => [
+      ...prev,
+      { message, variant, id: crypto.randomUUID() },
+    ]);
   }
 
   return (
-    <ToastShelf
-      messageStack={messageStack}
-      handleCloseToast={handleCloseToast}
-    />
+    <ToastStackContext.Provider
+      value={{ toastStack, handleCloseToast, handleAddingToast }}
+    >
+      {children}
+    </ToastStackContext.Provider>
   );
 }
 

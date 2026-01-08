@@ -10,6 +10,7 @@ import {
 import VisuallyHidden from '../VisuallyHidden';
 
 import styles from './Toast.module.css';
+import { ToastStackContext } from '../ToastProvider/ToastProvider.js';
 
 const ICONS_BY_VARIANT = {
   notice: Info,
@@ -18,9 +19,8 @@ const ICONS_BY_VARIANT = {
   error: AlertOctagon,
 };
 
-console.log(ICONS_BY_VARIANT['notice']);
-
-function Toast({ variant, message, handleCloseToast, msgKey }) {
+function Toast({ variant, message, msgKey }) {
+  const { handleCloseToast } = React.useContext(ToastStackContext);
   const Icon = ICONS_BY_VARIANT[variant];
 
   console.log('Toast');
