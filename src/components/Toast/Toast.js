@@ -23,19 +23,22 @@ function Toast({ variant, message, msgKey }) {
   const { handleCloseToast } = React.useContext(ToastStackContext);
   const Icon = ICONS_BY_VARIANT[variant];
 
-  console.log('Toast');
   return (
     <div className={`${styles.toast} ${styles[variant]}`}>
       <div className={styles.iconContainer}>
         <Icon size={24} />
       </div>
-      <p className={styles.content}>{message}</p>
+      <p className={styles.content}>
+        <VisuallyHidden>Dismiss message</VisuallyHidden>
+        {message}
+      </p>
       <button
         onClick={() => handleCloseToast(msgKey)}
         className={styles.closeButton}
+        aria-label="Dismiss message"
+        aria-live="off"
       >
         <X size={24} />
-        <VisuallyHidden>Dismiss message</VisuallyHidden>
       </button>
     </div>
   );

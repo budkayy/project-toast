@@ -13,7 +13,8 @@ function ToastPlayground() {
   const [message, setMessage] = React.useState('');
   const [variant, setVariant] = React.useState(VARIANT_OPTIONS[0]);
 
-  const { handleAddingToast } = React.useContext(ToastStackContext);
+  const { toastStack, handleAddingToast } =
+    React.useContext(ToastStackContext);
 
   function handleMessage(e) {
     const newMessage = e.target.value;
@@ -31,8 +32,6 @@ function ToastPlayground() {
     setMessage('');
     setVariant(VARIANT_OPTIONS[0]);
   }
-
-  console.log('ToastPlayGround');
 
   return (
     <div className={styles.wrapper}>

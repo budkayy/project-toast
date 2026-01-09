@@ -6,12 +6,16 @@ import { ToastStackContext } from '../ToastProvider/ToastProvider.js';
 
 function ToastShelf() {
   const { toastStack } = React.useContext(ToastStackContext);
-  console.log('TosatShelf');
+
   return (
-    <ol className={styles.wrapper}>
+    <ol className={styles.wrapper} role="region" aria-live="polite">
       {toastStack.map((msg) => {
         return (
-          <li key={msg.id} className={styles.toastWrapper}>
+          <li
+            key={msg.id}
+            className={styles.toastWrapper}
+            aria-label="Notification"
+          >
             <Toast
               variant={msg.variant}
               message={msg.message}
